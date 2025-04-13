@@ -1,13 +1,14 @@
-import openai
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 async def get_openai_response(prompt: str) -> dict:
-    res = openai.ChatCompletion.create(
+    res = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}]
     )
-    return {"response": res.choices[0].message["content"]}
+    print(res.choices[0].message.content)
+    return {"response": res.choices[0].message.content}
